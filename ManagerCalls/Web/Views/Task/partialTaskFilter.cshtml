@@ -1,0 +1,73 @@
+﻿<div class="alert alert-primary" role="alert">Журнал задач</div>
+<div class="link-task">
+    <div class="link-task-row1"><p>Задачи</p></div>
+    <div class="link-task-row2">@Html.ActionLink("Журнал звонков", "Index", "Call")</div>
+</div>
+<div class="task-form-container">
+    <form action="/Task/Filter" method="post">
+        <p><b>Фильтр</b></p>
+        <div class="task-form-domain">
+            <p>Услуги</p>
+            <div class="form-check" style="display: inline-block">
+                <input class="form-check-input" type="checkbox" name="Domain" value="1" id="domain-box" checked>
+                <label class="form-check-label" for="domain-box">Домен</label>
+            </div>
+            <div class="form-check" style="display: inline-block">
+                <input class="form-check-input" type="checkbox" name="Host" value="2" id="host-box" checked>
+                <label class="form-check-label" for="host-box">Хостинг</label>
+            </div>
+        </div>
+        <div class="task-form-host">
+            <p>Тип домена</p>
+            <div class="form-check" style="display: inline-block">
+                <input class="form-check-input" type="checkbox" id="tld-box" checked>
+                <label class="form-check-label" for="tld-box">TLD</label>
+            </div>
+            <div class="form-check" style="display: inline-block">
+                <input class="form-check-input" type="checkbox" id="dms-box" checked>
+                <label class="form-check-label" for="dms-box">DMS</label>
+            </div>
+        </div>
+        <div class="task-form-client">
+            <p>Тип клиента</p>
+            <div class="form-check" style="display: inline-block">
+                <input class="form-check-input" type="checkbox" name="Legal" value="1" id="jur-box" checked>
+                <label class="form-check-label" for="jur-box">Юр.</label>
+            </div>
+            <div class="form-check" style="display: inline-block">
+                <input class="form-check-input" type="checkbox" name="Physical" value="2" id="ind-box" checked>
+                <label class="form-check-label" for="ind-box">ИП</label>
+            </div>
+            <div class="form-check" style="display: inline-block">
+                <input class="form-check-input" type="checkbox" name="Individual" value="3" id="phys-box" checked>
+                <label class="form-check-label" for="phys-box">Физ.</label>
+            </div>
+        </div>
+        <div class="task-form-residue">
+            <p>Осталось</p>
+            <div class="form-check" style="display: inline-block">
+                <input class="form-check-input" type="checkbox" name="Ok" value="true" id="pending-box" checked>
+                <label class="form-check-label" for="pending-box">до приостановки</label>
+            </div>
+            <div class="form-check" style="display: inline-block">
+                <input class="form-check-input" type="checkbox" name="PendingDelete" value="true" id="delete-box" checked>
+                <label class="form-check-label" for="delete-box">до удаления</label>
+            </div>
+        </div>
+        <div class="task-form-day">
+            <p>Дней</p>
+            <div class="form-check" style="display: inline-block">
+                <label class="form-check-label" for="day-from-box">от</label>
+                <input type="text" id="day-from-box" name="From" value="0">
+            </div>
+            <div class="form-check" style="display: inline-block">
+                <label class="form-check-label" for="day-to-box">до</label>
+                <input type="text" id="day-to-box" name="To" value="7">
+            </div>
+        </div>
+        <div class="task-form-button">
+            <button type="submit">Вывести</button>
+            <button type="reset" id="reset-box-button">Сброс</button>
+        </div>
+    </form>
+</div>
