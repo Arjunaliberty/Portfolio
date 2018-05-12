@@ -1,9 +1,0 @@
-﻿@model Web.Models.Error
-
-@{
-    ViewBag.Title = "Ошибка";
-}
-<div class="alert alert-danger" role="alert">@Model.Message</div>
-@Html.ActionLink("Главная страница", "Index", "Home", null, new { @class = "btn btn-secondary", role = "button" })
-@Html.ActionLink("Журнал задач", "Index", "Task", null, new { @class = "btn btn-secondary", role = "button" })
-@Html.ActionLink("Журнал звонков", "Index", "Call", null, new { @class = "btn btn-secondary", role = "button" })
