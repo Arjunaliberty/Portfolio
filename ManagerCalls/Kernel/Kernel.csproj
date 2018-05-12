@@ -62,6 +62,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\ICRUD.cs" />
     <Compile Include="Context\DatabaseContext.cs" />
     <Compile Include="Core\CallManager.cs" />
     <Compile Include="Core\EmployeeManager.cs" />
@@ -101,7 +102,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Abstract\" />
     <Folder Include="Concrete\" />
     <Folder Include="Data\" />
   </ItemGroup>

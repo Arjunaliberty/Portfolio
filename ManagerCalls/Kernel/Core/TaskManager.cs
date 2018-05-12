@@ -14,7 +14,7 @@ namespace Kernel.Core
     /// </summary>
     public class TaskManager
     {
-        private TaskLog TaskLog;
+        //private TaskLog TaskLog;
 
         public TaskManager(TaskLog taskLog)
         {

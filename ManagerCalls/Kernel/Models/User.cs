@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,6 +41,8 @@ namespace Kernel.Models
     public class User
     {
         public int Id { get; set; }
+        [Required(ErrorMessage ="Введите имя")]
+        [RegularExpression(@"(?!)[A-zА-я0-9]{3,10}", ErrorMessage ="Можно использовать только цифры и буквенные значения")]
         public string Login { get; set; }
         public string Password { get; set; } // На данный момент пароль будет храниться в базе данных ввиде строки
         public string Email { get; set; }

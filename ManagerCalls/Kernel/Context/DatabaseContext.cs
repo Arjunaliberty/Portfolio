@@ -11,7 +11,7 @@ namespace Kernel.Context
 {
     public class DatabaseContext : DbContext
     {
-        public DatabaseContext() : base("Database")
+        public DatabaseContext() : base("Database1")
         {
             // Указывает EF, что если модель изменилась, нужно воссоздать базу данных с новой структурой
             Database.SetInitializer(new DropCreateDatabaseIfModelChanges<DatabaseContext>());
