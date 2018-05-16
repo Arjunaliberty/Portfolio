@@ -1,0 +1,303 @@
+﻿
+@{
+    ViewBag.Title = "Пользователи";
+}
+
+@section Scripts {
+    <script>
+        // Модель
+        var model = {
+            users: ko.observableArray(),
+            userAdd: ko.observable({
+                UserName: ko.observable(),
+                DepartmentTitle: ko.observable()
+            }),
+            userEdit: ko.observable({
+                Id: ko.observable(),
+                UserName: ko.observable(),
+                DepartmentTitle: ko.observable()
+            }),
+            userDelete: ko.observable({
+                Id: ko.observable(),
+                UserName: ko.observable(),
+                DepartmentTitle: ko.observable()
+            }),
+            number: ko.observable(),
+            displayInfoViseble: ko.observable(true),
+            displayAddViseble: ko.observable(false),
+            displayEditViseble: ko.observable(false),
+            displayDeleteViseble: ko.observable(false),
+            displayItemViseble: ko.observable(true),
+            displayItemDeleteViseble: ko.observable(true),
+        };
+        // Функция для получения всех пользователей в БД
+        function getAllItems() {
+            $.ajax({
+                type: 'GET',
+                url: '/api/web',
+                success: hadler
+
+            });
+
+            function hadler(data) {
+                model.users.removeAll();
+                var users = JSON.parse(data);
+                for (var i = 0; i < users.length; i++) {
+                    model.users.push(users[i]);
+                }
+            }
+        }
+        // Функция для обработки кнопки Add
+        function btnAddClick() {
+            if (model.displayInfoViseble() == true) {
+                model.displayInfoViseble(false);
+                model.displayAddViseble(true);
+            }
+        }
+        // Функция для обработки клика по кнопке Add в форме для добавления пользователя
+        function btnAddFormClick() {
+            var user = {
+                UserName: this.userAdd.UserName,
+                Department: {
+                    Title: this.userAdd.DepartmentTitle
+                }
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: '/api/web',
+                data: user,
+                success: successHandler
+            });
+
+            function successHandler() {
+                if (model.displayAddViseble() == true) {
+                    model.displayInfoViseble(true);
+                    model.displayAddViseble(false);
+                }
+                getAllItems();
+            }
+        }
+        function btnAddNoClick() {
+            if (model.displayAddViseble() == true) {
+                model.displayInfoViseble(true);
+                model.displayAddViseble(false);
+            }
+        }
+        // Функция для обработки кнопки Edit
+        function btnEditClick() {
+            if (model.displayInfoViseble() == true)
+                model.displayInfoViseble(false);
+            model.displayEditViseble(true);
+        }
+        // Функция для обработки кнопки списка
+        function selectEditClick() {
+            var number = this.number();
+            $.ajax({
+                type: 'GET',
+                url: '/api/web/' + number,
+                success: handler
+
+            });
+
+            function handler(data) {
+                var user = JSON.parse(data);
+                model.userEdit.Id = user.Id;
+                model.userEdit.UserName = user.UserName;
+                model.userEdit.DepartmentTitle = user.Department.Title;
+                model.displayItemViseble(false);
+            }
+
+        }
+        // Функция для обработки клика по кнопке Add в форме для добавления пользователя
+        function btnEditFormClick() {
+            var user = {
+                Id: this.userEdit.Id,
+                UserName: this.userEdit.UserName,
+                Department: {
+                    Title: this.userEdit.DepartmentTitle
+                }
+            }
+
+            $.ajax({
+                type: 'PUT',
+                url: '/api/web',
+                data: user,
+                success: sender
+
+            });
+
+            function sender() {
+                model.displayItemViseble(true);
+                if (model.displayEditViseble() == true) {
+                    model.displayInfoViseble(true);
+                    model.displayEditViseble(false);
+                }
+
+                getAllItems();
+            }
+        }
+        function btnEditNoClick() {
+            model.displayItemViseble(true);
+            if (model.displayEditViseble() == true) {
+                model.displayInfoViseble(true);
+                model.displayEditViseble(false);
+            }
+        }
+        // Функция для обработки кнопки Delete
+        function btnDeleteClick() {
+            if (model.displayInfoViseble() == true) {
+                model.displayInfoViseble(false);
+                model.displayDeleteViseble(true);
+            }
+        }
+        // Функция для обработки кнопки списка
+        function selectDeleteClick() {
+            var number = this.number();
+            $.ajax({
+                type: 'GET',
+                url: '/api/web/' + number,
+                success: handler
+
+            });
+
+            function handler(data) {
+                var user = JSON.parse(data);
+                model.userDelete.Id = user.Id;
+                model.userDelete.UserName = user.UserName;
+                model.userDelete.DepartmentTitle = user.Department.Title;
+                model.displayItemDeleteViseble(false);
+            }
+        }
+        function btnDeleteFormClick() {
+            var user = {
+                Id: this.userDelete.Id,
+                UserName: this.userDelete.UserName,
+                Department: {
+                    Title: this.userDelete.DepartmentTitle
+                }
+            }
+
+            $.ajax({
+                type: 'DELETE',
+                url: '/api/web',
+                data: user,
+                success: sender
+
+            });
+
+            function sender() {
+                model.displayItemDeleteViseble(true);
+                if (model.displayDeleteViseble() == true) {
+                    model.displayInfoViseble(true);
+                    model.displayDeleteViseble(false);
+                }
+
+                getAllItems();
+            }
+        }
+        function btnDeleteoClick() {
+            model.displayItemDeleteViseble(true);
+            if (model.displayDeleteViseble() == true) {
+                model.displayInfoViseble(true);
+                model.displayDeleteViseble(false);
+            }
+        }
+        // По окончании загрузки DOM
+        $(document).ready(function () {
+            getAllItems();
+            ko.applyBindings(model);
+        });
+    </script>
+}
+@section Body {
+    <div id="summary" class="section panel panel-primary" data-bind="if: displayInfoViseble">
+        <div class="btn-group btn-info-user" role="group" aria-label="Basic example">
+            <button id="btn-add" type="button" class="btn btn-secondary" data-bind="click: btnAddClick">Add</button>
+            <button id="btn-edit" type="button" class="btn btn-secondary" data-bind="click: btnEditClick">Edit</button>
+            <button id="btn-delete" type="button" class="btn btn-secondary" data-bind="click: btnDeleteClick">Delete</button>
+        </div>
+        <div class="table-info-user">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Department</th>
+                    </tr>
+                </thead>
+                <tbody data-bind="foreach: model.users">
+                    <tr>
+                        <th scope="row" data-bind="text: Id"></th>
+                        <td data-bind="text: UserName"></td>
+                        <td data-bind="text: Department.Title"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="add" class="section panel panel-primary" data-bind="if: displayAddViseble">
+        <div class="panel-body">
+            <form>
+                <h5>Добавить пользователя</h5>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Username" data-bind="value: userAdd.UserName">
+                </div>
+                <div class="form-group">
+                    <select class="form-control" data-bind="value: userAdd.DepartmentTitle">
+                        <option value="" disabled selected>Department</option>
+                        <option>IT department</option>
+                        <option>Marketing</option>
+                    </select>
+                </div>
+                <button type="button" class="btn btn-primary" data-bind="click: btnAddFormClick">Add</button>
+                <button type="button" class="btn btn-primary" data-bind="click: btnAddNoClick">No</button>
+            </form>
+        </div>
+    </div>
+    <div id="edit" class="section panel panel-primary" data-bind="if: displayEditViseble">
+        <div class="panel-body">
+            <div class="form-group" data-bind="if: displayItemViseble">
+                <select class="form-control" data-bind="value: number, event: { change: selectEditClick }">
+                    <option value="" disabled selected>Выберите пользователя</option>
+                    <!-- ko foreach: model.users  -->
+                    <option data-bind="text: UserName, value: Id"></option>
+                    <!-- /ko -->
+                </select>
+            </div>
+            <form data-bind="ifnot: displayItemViseble">
+                <h5>Редактировать пользователя</h5>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="exampleFormControlInput1" data-bind="text: userEdit.UserName, value: userEdit.UserName">
+                </div>
+                <div class="form-group">
+                    <select class="form-control" data-bind="value: userEdit.DepartmentTitle">
+                        <option value="" disabled selected>Department</option>
+                        <option>IT department</option>
+                        <option>Marketing</option>
+                    </select>
+                </div>
+                <button type="button" class="btn btn-primary" data-bind="click: btnEditFormClick">Edit</button>
+                <button type="button" class="btn btn-primary" data-bind="click: btnEditNoClick">No</button>
+            </form>
+        </div>
+    </div>
+    <div id="delete" class="section panel panel-primary" data-bind="if: displayDeleteViseble">
+        <div class="panel-body">
+            <div class="form-group" data-bind="if: displayItemDeleteViseble">
+                <select class="form-control" data-bind="value: number, event: { change: selectDeleteClick }">
+                    <option value="" disabled selected>Выберите пользователя</option>
+                    <!-- ko foreach: model.users  -->
+                    <option data-bind="text: UserName, value: Id"></option>
+                    <!-- /ko -->
+                </select>
+            </div>
+            <form data-bind="ifnot: displayItemDeleteViseble">
+                <div class="alert alert-danger" role="alert">Вы действительно хотите удалить пользователя <span data-bind="text: userDelete.UserName"></span>?</div>
+                <button type="button" class="btn btn-primary" data-bind="click: btnDeleteFormClick">Delete</button>
+                <button type="button" class="btn btn-primary" data-bind="click: btnDeleteoClick">No</button>
+            </form>
+        </div>
+    </div>
+}
+
