@@ -38,9 +38,6 @@ namespace GisMeteoLibrary.Core
         {
             foreach (var data in startData)
             {
-                string deb = "http://www.gismeteo.ru" + data.Link;
-
-
                 GisResource gisResource = new GisResource(new GisSettings("http://www.gismeteo.ru" + data.Link));
                 PageResultGisItem pageResultGisItem = new PageResultGisItem();
 
