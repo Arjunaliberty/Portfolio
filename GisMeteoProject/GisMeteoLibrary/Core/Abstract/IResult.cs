@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace GisMeteoLibrary.Core.Abstract
 {
-    interface IResult<T> 
+    public interface IResult<T>
     {
-        List<T> GetResult();
+       T GetResult(IResource resource, string pattern);    
     }
 }

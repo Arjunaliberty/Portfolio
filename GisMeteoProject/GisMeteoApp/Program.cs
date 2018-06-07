@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Text;
+using System.Threading;
+using GisMeteoLibrary.Core;
 using GisMeteoLibrary.Core.Concrete;
+using GisMeteoLibrary.Models;
 
 namespace GisMeteoApp
 {
@@ -8,20 +13,17 @@ namespace GisMeteoApp
     {
         static void Main(string[] args)
         {
-            List<string> coll = new List<string>();
-
-            GetGlobalResource resource = new GetGlobalResource(new ResourceSettings("http://www.gismeteo.ru/"));
-            GetGlobalResult result = new GetGlobalResult(resource, @"/weather-[a-z]+-[0-9]+/");
-
-            coll = result.GetResult();
-
-            foreach (var item in coll)
-            {
-                Console.WriteLine(item);
-            }
-
+            Timer timer = new Timer(Callback, null, 0, 600000);
 
             Console.ReadLine();
+            timer.Dispose();
+        }
+
+        private static void Callback(Object obj)
+        {
+            Console.Clear();
+            ConnectGisServis connect = new ConnectGisServis();
+            connect.Run();
         }
     }
 }

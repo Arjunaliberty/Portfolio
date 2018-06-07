@@ -1,0 +1,2 @@
+﻿@"href=""(/weather.+?[0-9]+?/)"".+?data-name=""(\w+?)""" 
+@"<a.+?tomorrow.+? data-text=""([А-я, ]+)""(?:.\r?\n?)+?<span class=""aa8cd8b189a"">(.+?)</span>(?:.\r?\n?)+?<div class='ffca53b157e'[^>]+>([^<]+?)</div><div class='ffca53b157e'[^>]+>([^<]+?)</div>(?:.\r?\n?)+?(?:<div class=""a203abcd9a0 f4fc56511eb"">([^<]+?)</div>)?</div></a>"

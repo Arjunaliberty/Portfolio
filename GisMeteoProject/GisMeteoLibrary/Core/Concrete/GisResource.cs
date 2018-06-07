@@ -1,15 +1,16 @@
-﻿using System;
-using GisMeteoLibrary.Core.Abstract;
+﻿using GisMeteoLibrary.Core.Abstract;
+using System;
 using xNet;
 
 namespace GisMeteoLibrary.Core.Concrete
 {
-    public class GetGlobalResource : IResource
+    /// <summary>
+    /// Реализует интерфейс IResource<T> для работый с http://www.gismeteo.ru/
+    /// </summary>
+    public class GisResource : IResource
     {
-        private IResourceSettings settings;
-        public string FullUrl { get; }
-
-        public GetGlobalResource(ResourceSettings settings)
+        private ISettings settings;
+        public GisResource(ISettings settings)
         {
             this.settings = settings;
         }
@@ -22,7 +23,7 @@ namespace GisMeteoLibrary.Core.Concrete
             {
                 using (var request = new HttpRequest())
                 {
-                    var response = request.Get(settings.BaseUrl);
+                    HttpResponse response = request.Get(settings.Url);
                     result = response.ToString();
                 }
             }
