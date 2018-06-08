@@ -47,9 +47,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Abstract\IMySqlContext.cs" />
     <Compile Include="Core\Abstract\IResource.cs" />
     <Compile Include="Core\Abstract\IResult.cs" />
     <Compile Include="Core\Abstract\ISettings.cs" />
+    <Compile Include="Core\DatabaseContext\MySqlContextGisItem.cs" />
+    <Compile Include="Core\DatabaseContext\MySqlContextGisStart.cs" />
     <Compile Include="Core\Concrete\PageResultGisItem.cs" />
     <Compile Include="Core\Concrete\GisResource.cs" />
     <Compile Include="Core\Concrete\PageResultGisStart.cs" />
@@ -57,8 +60,8 @@
     <Compile Include="Core\ConnectGisServis.cs" />
     <Compile Include="Core\DatabaseContext\MySqlGetConnect.cs" />
     <Compile Include="Core\DatabaseContext\MySqlSettings.cs" />
-    <Compile Include="Models\WeatherItemInfo.cs" />
-    <Compile Include="Models\WeatherStartInfo.cs" />
+    <Compile Include="Models\Weather.cs" />
+    <Compile Include="Models\Info.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

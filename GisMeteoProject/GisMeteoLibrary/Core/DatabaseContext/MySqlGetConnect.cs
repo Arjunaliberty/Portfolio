@@ -18,7 +18,8 @@ namespace GisMeteoLibrary.Core.DatabaseContext
 
         public MySqlConnection GetConnection()
         {
-            string connectionString = "Server=" + Settings.Host + ";Database=" + Settings.DatabaseName + ";port=" + Settings.Port + ";User Id=" + Settings.UserName + ";password=" + Settings.Password;
+            //string connectionString = "Server=" + Settings.Host + ";Database=" + Settings.DatabaseName + ";port=" + Settings.Port + ";User Id=" + Settings.UserName + ";password=" + Settings.Password + ";SslMode=" + Settings.SslMode + "";
+            string connectionString = "Server=" + Settings.Host + ";Database=" + Settings.DatabaseName + ";port=" + Settings.Port + ";User Id=" + Settings.UserName + ";SslMode=" + Settings.SslMode + "";
             MySqlConnection connection = new MySqlConnection(connectionString);
 
             return connection;

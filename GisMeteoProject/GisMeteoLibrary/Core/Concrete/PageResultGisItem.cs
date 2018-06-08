@@ -9,22 +9,22 @@ using System.Threading.Tasks;
 
 namespace GisMeteoLibrary.Core.Concrete
 {
-    public class PageResultGisItem : IResult<WeatherItemInfo>
+    public class PageResultGisItem : IResult<Weather>
     {
         public PageResultGisItem() {
             
         }
 
-        public WeatherItemInfo GetResult(IResource resource, string pattern)
+        public Weather GetResult(IResource resource, string pattern)
         {
-            WeatherItemInfo result = null;
+            Weather result = null;
           
             Regex regex = new Regex(pattern);
             Match match = regex.Match(resource.Load());
 
             if (match.Groups.Count > 0)
             {
-                result = new WeatherItemInfo
+                result = new Weather
                 {
                     WeatherCondition = match.Groups[1].Value,
                     Date = match.Groups[2].Value,

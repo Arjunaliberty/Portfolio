@@ -7,15 +7,15 @@ using System.Text.RegularExpressions;
 
 namespace GisMeteoLibrary.Core.Concrete
 {
-    public class PageResultGisStart : IResult<List<WeatherStartInfo>>
+    public class PageResultGisStart : IResult<List<Info>>
     {
         public PageResultGisStart() {
            
         }
 
-        public List<WeatherStartInfo> GetResult(IResource resource, string pattern)
+        public List<Info> GetResult(IResource resource, string pattern)
         {
-            List<WeatherStartInfo> result = new List<WeatherStartInfo>();
+            List<Info> result = new List<Info>();
           
             Regex regex = new Regex(pattern);
             MatchCollection collections = regex.Matches(resource.Load());
@@ -24,7 +24,7 @@ namespace GisMeteoLibrary.Core.Concrete
             {
                 foreach (Match res in collections)
                 {
-                    WeatherStartInfo startInfo = new WeatherStartInfo
+                    Info startInfo = new Info
                     {
                         City = res.Groups[2].Value,
                         Link = res.Groups[1].Value

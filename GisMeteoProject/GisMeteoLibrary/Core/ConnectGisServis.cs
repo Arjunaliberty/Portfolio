@@ -1,4 +1,5 @@
 ﻿using GisMeteoLibrary.Core.Concrete;
+using GisMeteoLibrary.Core.DatabaseContext;
 using GisMeteoLibrary.Models;
 using System;
 using System.Collections.Generic;
@@ -13,12 +14,12 @@ namespace GisMeteoLibrary.Core
         const string pattern1 = @"href=""(/weather.+?[0-9]+?/)"".+? data-name=""(\w+?)""";
         const string pattern2 = @"<a.+?tomorrow.+? data-text=""([А-я, ]+)""(?:.\r?\n?)+?<span class="".+?"">(.+?)</span>(?:.\r?\n?)+?<div class='.+?'[^>]+>([^<]+?)</div><div class='.+?'[^>]+>([^<]+?)</div>(?:.\r?\n?)+?(?:<div class="".+?"">([^<]+?)</div>)?</div></a>";
 
-        private List<WeatherStartInfo> startData;
-        private List<WeatherItemInfo> itemData;
+        private List<Info> startData;
+        private List<Weather> itemData;
         
         public ConnectGisServis() {
-            this.startData = new List<WeatherStartInfo>();
-            this.itemData = new List<WeatherItemInfo>();
+            this.startData = new List<Info>();
+            this.itemData = new List<Weather>();
         }
 
         private void RunGisStartPage()
@@ -28,10 +29,8 @@ namespace GisMeteoLibrary.Core
 
             startData = pageResultGisStart.GetResult(gisResource, pattern1);
 
-            foreach (var item in startData)
-            {
-                Console.WriteLine("{0}   {1}", item.City, item.Link);
-            }
+            MySqlContextGisStart context = new MySqlContextGisStart(new MySqlGetConnect(new MySqlSettings()));
+            context.Insert(startData);
         }
 
         private void RunGisCityPage()
@@ -41,7 +40,7 @@ namespace GisMeteoLibrary.Core
                 GisResource gisResource = new GisResource(new GisSettings("http://www.gismeteo.ru" + data.Link));
                 PageResultGisItem pageResultGisItem = new PageResultGisItem();
 
-                WeatherItemInfo info = pageResultGisItem.GetResult(gisResource, pattern2);
+                Weather info = pageResultGisItem.GetResult(gisResource, pattern2);
 
                 if (!itemData.Contains(info)) itemData.Add(info);
 

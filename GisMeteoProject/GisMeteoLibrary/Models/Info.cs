@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace GisMeteoLibrary.Models
 {
-    public class WeatherStartInfo
+    public class Info
     {
+        public int Id { get; set; }
         public string City { get; set; }
         public string Link { get; set; }
     }

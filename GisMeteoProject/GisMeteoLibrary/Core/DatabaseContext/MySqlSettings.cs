@@ -13,6 +13,7 @@ namespace GisMeteoLibrary.Core.DatabaseContext
         public string DatabaseName { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
+        public string SslMode { get; set; }
 
         public MySqlSettings()
         {
@@ -20,16 +21,18 @@ namespace GisMeteoLibrary.Core.DatabaseContext
             this.Port = 3306;
             this.DatabaseName = "gis_database";
             this.UserName = "root";
-            this.Password = "";
+            this.Password = " ";
+            this.SslMode = "none";
         }
 
-        public MySqlSettings(string host, int port, string databaseName, string username, string password)
+        public MySqlSettings(string host, int port, string databaseName, string username, string password, string sslMode)
         {
             this.Host = host;
             this.Port = port;
             this.DatabaseName = databaseName;
             this.UserName = username;
             this.Password = password;
+            this.SslMode = sslMode;
         }
     }
 }
