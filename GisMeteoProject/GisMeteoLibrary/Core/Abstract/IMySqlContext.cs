@@ -10,8 +10,8 @@ namespace GisMeteoLibrary.Core.Abstract
     {
         T GetItem(int id);
         List<T> GetItems();
-        void Insert(List<T> param);
-        void Update(List<T> param);
+        void Insert(T param);
+        void Update(T param);
         void Delete(T param);
     }
 }

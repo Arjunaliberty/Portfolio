@@ -7,9 +7,9 @@ using System.Text.RegularExpressions;
 
 namespace GisMeteoLibrary.Core.Concrete
 {
-    public class PageResultGisStart : IResult<List<Info>>
+    public class ResultGisInfo : IResult<List<Info>>
     {
-        public PageResultGisStart() {
+        public ResultGisInfo() {
            
         }
 

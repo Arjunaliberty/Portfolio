@@ -1,21 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using GisMeteoLibrary.Core.Abstract;
 using GisMeteoLibrary.Models;
 using MySql.Data.MySqlClient;
 
 namespace GisMeteoLibrary.Core.DatabaseContext
 {
-    public class MySqlContextGisStart : IMySqlContextd<Info>
+    /// <summary>
+    /// Класс - контекст для работы с БД
+    /// </summary>
+    public class MySqlContextGisInfo : IMySqlContextd<Info>
     {
         private MySqlGetConnect db;
 
-        public MySqlContextGisStart(MySqlGetConnect db)
+        public MySqlContextGisInfo(MySqlGetConnect db)
         {
             this.db = db;
         }
@@ -101,54 +100,61 @@ namespace GisMeteoLibrary.Core.DatabaseContext
             return result;
         }
 
-        public void Insert(List<Info> param)
+        public void Insert(Info param)
         {
             string sqlInsert = "INSERT INTO  gis_database.info(city, link) VALUES (@city, @link)";
-            string sqlCheck = "SELECT `city` FROM gis_database.info WHERE `city`= @city";
+
+            MySqlConnection connectionInsert = db.GetConnection();
+                      
+            try
+            {
+                connectionInsert.Open();
+
+                MySqlCommand commandInsert = new MySqlCommand(sqlInsert, connectionInsert);
+
+                MySqlParameter parametrCity = new MySqlParameter("@city", MySqlDbType.String);
+                parametrCity.Value = param.City;
+                commandInsert.Parameters.Add(parametrCity);
+
+                MySqlParameter parametrLink = new MySqlParameter("@link", MySqlDbType.String);
+                parametrLink.Value = param.Link;
+                commandInsert.Parameters.Add(parametrLink);
+
+                commandInsert.ExecuteNonQuery();
+            }
+            finally
+            {
+                connectionInsert.Close();
+                connectionInsert.Dispose();
+                connectionInsert = null;
+            }
+        }
+
+        public void Update(Info param)
+        {
+
+            string sqlUpdate = "UPDATE gis_database.info SET `city`=@city, `link`=@link WHERE `id`=@id";
             MySqlConnection connections = db.GetConnection();
-           
+
             try
             {
                 connections.Open();
-                foreach (var item in param)
-                {
-                    MySqlCommand commandCheck = new MySqlCommand(sqlCheck, connections);
-                    MySqlParameter cityCheck = new MySqlParameter("@city", MySqlDbType.String);
-                    cityCheck.Value = item.City;
-                    commandCheck.Parameters.Add(cityCheck);
 
-                    using(DbDataReader reader = commandCheck.ExecuteReader())
-                    {
-                        if (!reader.HasRows)
-                        {
+                MySqlCommand commandUpdate = new MySqlCommand(sqlUpdate, connections);
 
-                            MySqlConnection connectionInsert = db.GetConnection();
+                MySqlParameter parameterId = new MySqlParameter("@id", MySqlDbType.Int32);
+                parameterId.Value = param.Id;
+                commandUpdate.Parameters.Add(parameterId);
+                    
+                MySqlParameter parameterCity = new MySqlParameter("@city", MySqlDbType.String);
+                parameterCity.Value = param.City;
+                commandUpdate.Parameters.Add(parameterCity);
 
-                            try
-                            {
-                                connectionInsert.Open();
+                MySqlParameter parameterLink = new MySqlParameter("@link", MySqlDbType.String);
+                parameterLink.Value = param.Link;
+                commandUpdate.Parameters.Add(parameterLink);
 
-                                MySqlCommand commandInsert = new MySqlCommand(sqlInsert, connectionInsert);
-
-                                MySqlParameter cityIsert = new MySqlParameter("@city", MySqlDbType.String);
-                                cityIsert.Value = item.City;
-                                commandInsert.Parameters.Add(cityIsert);
-
-                                MySqlParameter linkInsert = new MySqlParameter("@link", MySqlDbType.String);
-                                linkInsert.Value = item.Link;
-                                commandInsert.Parameters.Add(linkInsert);
-
-                                commandInsert.ExecuteNonQuery();
-                            }
-                            finally
-                            {
-                                connectionInsert.Close();
-                                connectionInsert.Dispose();
-                                connectionInsert = null;
-                            }
-                        }
-                    }
-                }
+                commandUpdate.ExecuteNonQuery();
             }
             finally
             {
@@ -158,14 +164,28 @@ namespace GisMeteoLibrary.Core.DatabaseContext
             }
         }
 
-        public void Update(List<Info> param)
-        {
-            
-        }
-
         public void Delete(Info param)
         {
-           
+            string sqlDelete = "DELETE gis_database.info WHERE `id`=@id";
+            MySqlConnection connections = db.GetConnection();
+
+            try
+            {
+                connections.Open();
+
+                MySqlCommand commandDelete = new MySqlCommand(sqlDelete, connections);
+                MySqlParameter parameterId = new MySqlParameter("@id", MySqlDbType.Int32);
+                parameterId.Value = param.Id;
+                commandDelete.Parameters.Add(parameterId);
+
+                commandDelete.ExecuteNonQuery();
+            }
+            finally
+            {
+                connections.Close();
+                connections.Dispose();
+                connections = null;
+            }
         }
     }
 }

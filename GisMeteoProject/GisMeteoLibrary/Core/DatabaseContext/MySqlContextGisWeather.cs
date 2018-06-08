@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GisMeteoLibrary.Core.DatabaseContext
 {
-    public class MySqlContextGisItem
+    public class MySqlContextGisWeather
     {
             
     }

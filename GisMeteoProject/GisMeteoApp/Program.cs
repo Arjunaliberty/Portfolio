@@ -22,7 +22,7 @@ namespace GisMeteoApp
         private static void Callback(Object obj)
         {
             Console.Clear();
-            ConnectGisServis connect = new ConnectGisServis();
+            ConnectServis connect = new ConnectServis();
             connect.Run();
         }
     }

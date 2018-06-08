@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace GisMeteoLibrary.Core.Concrete
 {
-    public class PageResultGisItem : IResult<Weather>
+    public class ResultGisWeather : IResult<Weather>
     {
-        public PageResultGisItem() {
+        public ResultGisWeather() {
             
         }
 
