@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace GisMeteoLibrary.Core.DatabaseContext
 {
-    public class MySqlGetConnect
+    public class MySqlGetConnection
     {
         private MySqlSettings Settings;
 
-        public MySqlGetConnect(MySqlSettings settings)
+        public MySqlGetConnection(MySqlSettings settings)
         {
             this.Settings = settings;
         }

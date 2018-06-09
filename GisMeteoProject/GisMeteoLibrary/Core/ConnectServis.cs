@@ -8,7 +8,7 @@ using System.Data.Common;
 
 namespace GisMeteoLibrary.Core
 {
-    public class ConnectServis
+    public class ConnectServis                                                                                                     
     {
         const string pattern1 = @"href=""(/weather.+?[0-9]+?/)"".+? data-name=""(\w+?)""";
         const string pattern2 = @"<a.+?tomorrow.+? data-text=""([А-я, ]+)""(?:.\r?\n?)+?<span class="".+?"">(.+?)</span>(?:.\r?\n?)+?<div class='.+?'[^>]+>([^<]+?)</div><div class='.+?'[^>]+>([^<]+?)</div>(?:.\r?\n?)+?(?:<div class="".+?"">([^<]+?)</div>)?</div></a>";
@@ -25,53 +25,11 @@ namespace GisMeteoLibrary.Core
         {
             GisResource gisResource = new GisResource(new GisSettings("http://www.gismeteo.ru"));
             ResultGisInfo pageResultGisStart = new ResultGisInfo();
-            MySqlGetConnect connect = new MySqlGetConnect(new MySqlSettings());
-            MySqlConnection connections = connect.GetConnection();
-            string sqlChek = "SELECT id FROM gis_database.info WHERE `city`=@city";
+           
 
             infoData = pageResultGisStart.GetResult(gisResource, pattern1);
 
-            try
-            {
-                connections.Open();
-
-                foreach (var item in infoData)
-                {
-                    int id = 0;
-                    MySqlCommand commandCheck = new MySqlCommand(sqlChek, connections);
-                    MySqlParameter parameterCity = new MySqlParameter("@city", MySqlDbType.String);
-                    parameterCity.Value = item.City;
-                    commandCheck.Parameters.Add(parameterCity);
-                    
-                    using(DbDataReader reader = commandCheck.ExecuteReader())
-                    {
-                        if(reader.HasRows)
-                        {
-                            while (reader.Read())
-                            {
-                               id = (int)reader.GetValue(0);
-                            }
-                        }
-                    }
-
-                    if(id != 0)
-                    {
-                        MySqlContextGisInfo context = new MySqlContextGisInfo(connect);
-                        context.Update(item);
-                    }
-                    else
-                    {
-                        MySqlContextGisInfo context = new MySqlContextGisInfo(connect);
-                        context.Insert(item);
-                    }
-                }
-            }
-            finally
-            {
-                connections.Close();
-                connections.Dispose();
-                connections = null;
-            }
+            
         }
 
         private void RunWeather()
@@ -87,10 +45,7 @@ namespace GisMeteoLibrary.Core
 
             }
 
-            foreach (var item in weatherData)
-            {
-                Console.WriteLine("{0} {1} {2} {3} {4}", item.WeatherCondition, item.Date, item.TemperatureMin, item.TemperatureMax, item.Precipitation);
-            }
+            
         }
 
         public void Run()

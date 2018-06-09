@@ -14,6 +14,6 @@ namespace GisMeteoLibrary.Models
         public string TemperatureMin { get; set; }
         public string TemperatureMax { get; set; }
         public string Precipitation { get; set; }
-        public int InfoId { get; set; }
+        public int? InfoId { get; set; }
     }
 }
