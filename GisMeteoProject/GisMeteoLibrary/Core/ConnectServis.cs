@@ -1,4 +1,5 @@
 ﻿using GisMeteoLibrary.Core.Concrete;
+using GisMeteoLibrary.Core.Database;
 using GisMeteoLibrary.Core.DatabaseContext;
 using GisMeteoLibrary.Models;
 using MySql.Data.MySqlClient;
@@ -23,27 +24,51 @@ namespace GisMeteoLibrary.Core
 
         private void RunInfo()
         {
-            GisResource gisResource = new GisResource(new GisSettings("http://www.gismeteo.ru"));
-            ResultGisInfo pageResultGisStart = new ResultGisInfo();
+            //GisResource gisResource = new GisResource(new GisSettings("http://www.gismeteo.ru"));
+            //ResultGisInfo pageResultGisStart = new ResultGisInfo();
            
 
-            infoData = pageResultGisStart.GetResult(gisResource, pattern1);
+            //infoData = pageResultGisStart.GetResult(gisResource, pattern1);
 
-            
+            MySqlConnection connection = new MySqlGetConnection(new MySqlSettings()).GetConnection();
+            MySqlContext context = new MySqlContext(connection);
+
+            //MySqlDatabase database1 = new MySqlDatabase
+            //{
+            //    Informations = new Info
+            //    {
+            //        City = "Gomel",
+            //        Link = "gismeteo.ru/gomel"
+            //    }
+            //};
+
+            //context.Insert(database1, SelectTable.Informations);
+
+            MySqlDatabase database2 = new MySqlDatabase
+            {
+                Informations = new Info
+                {
+                    Id = 24,
+                    City = "Gomel",
+                    Link = "gismeteo.ru/gomel"
+                }
+            };
+
+            context.Delete(database2);
         }
 
         private void RunWeather()
         {
-            foreach (var data in infoData)
-            {
-                GisResource gisResource = new GisResource(new GisSettings("http://www.gismeteo.ru" + data.Link));
-                ResultGisWeather pageResultGisItem = new ResultGisWeather();
+            //foreach (var data in infoData)
+            //{
+            //    GisResource gisResource = new GisResource(new GisSettings("http://www.gismeteo.ru" + data.Link));
+            //    ResultGisWeather pageResultGisItem = new ResultGisWeather();
 
-                Weather info = pageResultGisItem.GetResult(gisResource, pattern2);
+            //    Weather info = pageResultGisItem.GetResult(gisResource, pattern2);
 
-                if (!weatherData.Contains(info)) weatherData.Add(info);
+            //    if (!weatherData.Contains(info)) weatherData.Add(info);
 
-            }
+            //}
 
             
         }

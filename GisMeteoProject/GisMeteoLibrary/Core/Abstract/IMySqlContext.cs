@@ -13,6 +13,6 @@ namespace GisMeteoLibrary.Core.Abstract
         List<T> GetItems(SelectTable selectTable);
         void Insert(T param, SelectTable selectTable);
         void Update(T param, SelectTable selectTable);
-        void Delete(T param, SelectTable selectTable);
+        void Delete(T param);
     }
 }

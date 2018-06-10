@@ -3,6 +3,7 @@ using GisMeteoLibrary.Models;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,9 @@ using System.Threading.Tasks;
 
 namespace GisMeteoLibrary.Core.Database
 {
+    /// <summary>
+    /// Класс - контекст для работы с БД
+    /// </summary>
     public class MySqlContext : IMySqlContext<MySqlDatabase>
     {
         MySqlConnection connection;
@@ -37,7 +41,10 @@ namespace GisMeteoLibrary.Core.Database
 
                     try
                     {
-                        connection.Open();
+                        if (connection.State == ConnectionState.Closed)
+                        {
+                            connection.Open();
+                        }
 
                         MySqlCommand command = new MySqlCommand(sqlSelect, connection);
                         MySqlParameter parameterId = new MySqlParameter("@id", MySqlDbType.Int32);
@@ -73,7 +80,10 @@ namespace GisMeteoLibrary.Core.Database
 
                     try
                     {
-                        connection.Open();
+                        if (connection.State == ConnectionState.Closed)
+                        {
+                            connection.Open();
+                        }
 
                         MySqlCommand command = new MySqlCommand(sqlSelect, connection);
                         MySqlParameter parameterId = new MySqlParameter("@id", MySqlDbType.Int32);
@@ -113,7 +123,10 @@ namespace GisMeteoLibrary.Core.Database
 
                     try
                     {
-                        connection.Open();
+                        if (connection.State == ConnectionState.Closed)
+                        {
+                            connection.Open();
+                        }
 
                         MySqlCommand command = new MySqlCommand(sqlSelect, connection);
                         MySqlParameter parameterId = new MySqlParameter("@id", MySqlDbType.Int32);
@@ -159,7 +172,11 @@ namespace GisMeteoLibrary.Core.Database
 
             return result;
         }
-
+        /// <summary>
+        /// Получение списка данных из БД по id
+        /// </summary>
+        /// <param name="selectTable">Таблица для выборки</param>
+        /// <returns>Возвращает List<MySqlDatabase> или null если запись не найдена</returns>
         public List<MySqlDatabase> GetItems(SelectTable selectTable)
         {
             string sqlSelect;
@@ -172,7 +189,10 @@ namespace GisMeteoLibrary.Core.Database
 
                     try
                     {
-                        connection.Open();
+                        if (connection.State == ConnectionState.Closed)
+                        {
+                            connection.Open();
+                        }
 
                         MySqlCommand command = new MySqlCommand(sqlSelect, connection);
                         
@@ -213,7 +233,10 @@ namespace GisMeteoLibrary.Core.Database
 
                     try
                     {
-                        connection.Open();
+                        if (connection.State == ConnectionState.Closed)
+                        {
+                            connection.Open();
+                        }
 
                         MySqlCommand command = new MySqlCommand(sqlSelect, connection);
 
@@ -258,7 +281,10 @@ namespace GisMeteoLibrary.Core.Database
 
                     try
                     {
-                        connection.Open();
+                        if (connection.State == ConnectionState.Closed)
+                        {
+                            connection.Open();
+                        }
 
                         MySqlCommand command = new MySqlCommand(sqlSelect, connection);
                        
@@ -312,16 +338,59 @@ namespace GisMeteoLibrary.Core.Database
 
             return result;
         }
-
+        /// <summary>
+        /// Добавление данных в БД
+        /// </summary>
+        /// <param name="param">Параметр типа MySqlDatabase</param>
+        /// <param name="selectTable">Таблица для встакви</param>
         public void Insert(MySqlDatabase param, SelectTable selectTable)
         {
+            string sqlInsert;
+
             switch (selectTable)
             {
                 case SelectTable.Informations:
+                    sqlInsert = "INSERT INTO info(city, link) VALUES(@city, @link)";
+                    MySqlTransaction transaction = null;
+
+                    if (param.Informations != null)
+                    {
+                        try
+                        {
+                            if (connection.State == ConnectionState.Closed)
+                            {
+                                connection.Open();
+                            }
+                            
+                            transaction = connection.BeginTransaction(System.Data.IsolationLevel.Serializable);
+                            MySqlCommand command = new MySqlCommand(sqlInsert, connection, transaction);
+
+                            MySqlParameter parameterCity = new MySqlParameter("@city", MySqlDbType.String);
+                            parameterCity.Value = param.Informations.City;
+                            command.Parameters.Add(parameterCity);
+
+                            MySqlParameter parameterLink = new MySqlParameter("@link", MySqlDbType.String);
+                            parameterLink.Value = param.Informations.Link;
+                            command.Parameters.Add(parameterLink);
+
+                            command.ExecuteNonQuery();
+                            transaction.Commit();
+                        }
+                        catch (Exception)
+                        {
+                            transaction.Rollback();
+                            throw new Exception("Произошла ошибка при добавлении данных в БД");
+                        }
+                        finally
+                        {
+                            connection.Close();
+                        }
+                    }
+
                     break;
                 case SelectTable.Weathers:
-                    break;
                 case SelectTable.All:
+                    sqlInsert = "";
                     break;
                 default:
                     break;
@@ -342,19 +411,47 @@ namespace GisMeteoLibrary.Core.Database
                     break;
             }
         }
-
-        public void Delete(MySqlDatabase param, SelectTable selectTable)
+        /// <summary>
+        /// Удаление данных из БД
+        /// </summary>
+        /// <param name="param">Параметр типа MySqlDatabase/param>
+        public void Delete(MySqlDatabase param)
         {
-            switch (selectTable)
+            if(param.Informations !=null && param.Informations.Id > 0)
             {
-                case SelectTable.Informations:
-                    break;
-                case SelectTable.Weathers:
-                    break;
-                case SelectTable.All:
-                    break;
-                default:
-                    break;
+                string sqlDelete = "DELETE FROM info WHERE `id`=@id";
+                MySqlTransaction transaction = null;
+
+                try
+                {
+                    if(connection.State == ConnectionState.Closed)
+                    {
+                        connection.Open();
+                    }
+
+                    transaction = connection.BeginTransaction(IsolationLevel.Serializable);
+                    MySqlCommand command = new MySqlCommand(sqlDelete, connection, transaction);
+
+                    MySqlParameter parameterId = new MySqlParameter("@id", MySqlDbType.Int32);
+                    parameterId.Value = param.Informations.Id;
+                    command.Parameters.Add(parameterId);
+
+                    command.ExecuteNonQuery();
+                    transaction.Commit();
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    throw new Exception("Ошибка при удалении данных из БД");
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+            else
+            {
+                throw new Exception("Объект не существует либо отсуствует параметр id главной таблицы");
             }
         }
     }
