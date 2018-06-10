@@ -5,9 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GisMeteoLibrary.Core.Database
 {
@@ -350,11 +347,10 @@ namespace GisMeteoLibrary.Core.Database
             switch (selectTable)
             {
                 case SelectTable.Informations:
-                    sqlInsert = "INSERT INTO info(city, link) VALUES(@city, @link)";
-                    MySqlTransaction transaction = null;
-
                     if (param.Informations != null)
                     {
+                        sqlInsert = "INSERT INTO info(city, link) VALUES(@city, @link)";
+                        MySqlTransaction transaction = null;
                         try
                         {
                             if (connection.State == ConnectionState.Closed)
@@ -389,8 +385,121 @@ namespace GisMeteoLibrary.Core.Database
 
                     break;
                 case SelectTable.Weathers:
+                    if (param.Weathers != null && param.Weathers.InfoId > 0)
+                    {
+                        sqlInsert = "INSERT INTO weather(Condition, Date, TempMin, TempMax, Precipitation, Info_Id) VALUES(@condition, @date, @tempMin, @tempMax, @precipitation, @info_Id)";
+                        MySqlTransaction transaction = null;
+
+                        try
+                        {
+                            if (connection.State == ConnectionState.Closed)
+                            {
+                                connection.Open();
+                            }
+
+                            transaction = connection.BeginTransaction(System.Data.IsolationLevel.Serializable);
+                            MySqlCommand command = new MySqlCommand(sqlInsert, connection, transaction);
+
+                            MySqlParameter parameterCondition = new MySqlParameter("@condition", MySqlDbType.String);
+                            parameterCondition.Value = param.Weathers.WeatherCondition;
+                            command.Parameters.Add(parameterCondition);
+
+                            MySqlParameter parameterDate = new MySqlParameter("@date", MySqlDbType.String);
+                            parameterDate.Value = param.Weathers.Date;
+                            command.Parameters.Add(parameterDate);
+
+                            MySqlParameter parameterTempMin = new MySqlParameter("@tempMin", MySqlDbType.String);
+                            parameterTempMin.Value = param.Weathers.TemperatureMin;
+                            command.Parameters.Add(parameterTempMin);
+
+                            MySqlParameter parameterTempMax = new MySqlParameter("@tempMax", MySqlDbType.String);
+                            parameterTempMax.Value = param.Weathers.TemperatureMax;
+                            command.Parameters.Add(parameterTempMax);
+
+                            MySqlParameter parameterPrecipitation = new MySqlParameter("@precipitation", MySqlDbType.String);
+                            parameterPrecipitation.Value = param.Weathers.Precipitation;
+                            command.Parameters.Add(parameterPrecipitation);
+
+                            MySqlParameter parameterInfo_Id = new MySqlParameter("@info_Id", MySqlDbType.String);
+                            parameterInfo_Id.Value = param.Weathers.InfoId;
+                            command.Parameters.Add(parameterInfo_Id);
+
+                            command.ExecuteNonQuery();
+                            transaction.Commit();
+                        }
+                        catch (Exception)
+                        {
+                            transaction.Rollback();
+                            throw new Exception("Произошла ошибка при добавлении данных в БД");
+                        }
+                        finally
+                        {
+                            connection.Close();
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Объект не существует либо отсуствует внешний ключ Info_Id");
+                    }
+
+                    break;
                 case SelectTable.All:
-                    sqlInsert = "";
+                    string sqlInsertFirst = "INSERT INTO info(`city`, `link`) VALUES(@city, @link)";
+                    string sqlInsertSecond = "INSERT INTO weather(`Condition`, `Date`, `TempMin`, `TempMax`, `Precipitation`, `Info_Id`) VALUES(@condition, @date, @tempMin, @tempMax, @precipitation, LAST_INSERT_ID())";
+
+                    if(param.Informations != null && param.Weathers != null)
+                    {
+                        MySqlTransaction transaction = null;
+
+                        try
+                        {
+                            if (connection.State == ConnectionState.Closed)
+                            {
+                                connection.Open();
+                            }
+
+                            transaction = connection.BeginTransaction();
+
+                            MySqlCommand commandFirst = new MySqlCommand(sqlInsertFirst, connection, transaction);
+                            MySqlParameter parameterCity = new MySqlParameter("@city", MySqlDbType.String);
+                            parameterCity.Value = param.Informations.City;
+                            commandFirst.Parameters.Add(parameterCity);
+                            MySqlParameter parameterLink = new MySqlParameter("@link", MySqlDbType.String);
+                            parameterLink.Value = param.Informations.Link;
+                            commandFirst.Parameters.Add(parameterLink);
+                            commandFirst.ExecuteNonQuery();
+
+                            MySqlCommand commandSecond = new MySqlCommand(sqlInsertSecond, connection, transaction);
+                            MySqlParameter parameterCondition = new MySqlParameter("@condition", MySqlDbType.String);
+                            parameterCondition.Value = param.Weathers.WeatherCondition;
+                            commandSecond.Parameters.Add(parameterCondition);
+                            MySqlParameter parameterDate = new MySqlParameter("@date", MySqlDbType.String);
+                            parameterDate.Value = param.Weathers.Date;
+                            commandSecond.Parameters.Add(parameterDate);
+                            MySqlParameter parameterTempMin = new MySqlParameter("@tempMin", MySqlDbType.String);
+                            parameterTempMin.Value = param.Weathers.TemperatureMin;
+                            commandSecond.Parameters.Add(parameterTempMin);
+                            MySqlParameter parameterTempMax = new MySqlParameter("@tempMax", MySqlDbType.String);
+                            parameterTempMax.Value = param.Weathers.TemperatureMax;
+                            commandSecond.Parameters.Add(parameterTempMax);
+                            MySqlParameter parameterPrecipitation = new MySqlParameter("@precipitation", MySqlDbType.String);
+                            parameterPrecipitation.Value = param.Weathers.Precipitation;
+                            commandSecond.Parameters.Add(parameterPrecipitation);
+                            commandSecond.ExecuteNonQuery();
+
+                            transaction.Commit();
+                        }
+                        catch (Exception)
+                        {
+                            transaction.Rollback();
+                            throw new Exception("Ошибка при добавлении данных в БД");
+                        }
+                        finally
+                        {
+                            connection.Close();
+                        }
+                    }
+
                     break;
                 default:
                     break;

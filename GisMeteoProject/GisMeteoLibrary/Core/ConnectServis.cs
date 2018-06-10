@@ -51,10 +51,15 @@ namespace GisMeteoLibrary.Core
                     Id = 24,
                     City = "Gomel",
                     Link = "gismeteo.ru/gomel"
+                },
+                Weathers  = new Weather
+                {
+                    WeatherCondition = "Солнце",
+                    Date = "22.09.1984"
                 }
             };
 
-            context.Delete(database2);
+            context.Insert(database2, SelectTable.All);
         }
 
         private void RunWeather()
