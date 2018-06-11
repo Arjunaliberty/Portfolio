@@ -12,7 +12,12 @@ namespace GisMeteoLibrary.Core.Concrete
     public class ResultGisInfo : IResult<List<Info>>
     {
         public ResultGisInfo() {}
-
+        /// <summary>
+        /// Метод для получения данны с ресурса
+        /// </summary>
+        /// <param name="resource">Ресурс типа IResource</param>
+        /// <param name="pattern">Шаблон регулярного выражения</param>
+        /// <returns>Коллекцию List<Info></returns>
         public List<Info> GetResult(IResource resource, string pattern)
         {
             List<Info> result = new List<Info>();

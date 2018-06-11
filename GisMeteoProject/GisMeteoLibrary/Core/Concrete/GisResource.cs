@@ -14,7 +14,10 @@ namespace GisMeteoLibrary.Core.Concrete
         {
             this.settings = settings;
         }
-
+        /// <summary>
+        /// Загружает данные с ресурса
+        /// </summary>
+        /// <returns>Данные сервиса</returns>
         public string Load()
         {
             string result = null;
@@ -29,8 +32,7 @@ namespace GisMeteoLibrary.Core.Concrete
             }
             catch (Exception)
             {
-
-                throw;
+                throw new Exception("Ошибка при загрузке данных сервиса");
             }
 
             return result;

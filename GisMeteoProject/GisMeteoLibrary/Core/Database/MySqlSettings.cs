@@ -16,7 +16,9 @@ namespace GisMeteoLibrary.Core.DatabaseContext
         public string SslMode { get; }
 
         public string ConnectionString { get; set; }
-
+        /// <summary>
+        /// Конструктор по умолчанию
+        /// </summary>
         public MySqlSettings()
         {
             this.Host = "localhost";
@@ -28,7 +30,14 @@ namespace GisMeteoLibrary.Core.DatabaseContext
             this.ConnectionString = "Server=" + Host + ";Database=" + DatabaseName + ";port=" + Port + ";User Id=" + UserName + ";SslMode=" + SslMode + "";
 
         }
-
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        /// <param name="host">Хост</param>
+        /// <param name="port">Порт</param>
+        /// <param name="databaseName">Имя базы данных</param>
+        /// <param name="username">Имя пользователя</param>
+        /// <param name="sslMode">SSL</param>
         public MySqlSettings(string host, int port, string databaseName, string username, string sslMode)
         {
             this.Host = host;
@@ -39,7 +48,15 @@ namespace GisMeteoLibrary.Core.DatabaseContext
 
             this.ConnectionString = "Server=" + Host + ";Database=" + DatabaseName + ";port=" + Port + ";User Id=" + UserName + ";SslMode=" + SslMode + "";
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="host">Хост</param>
+        /// <param name="port">Порт</param>
+        /// <param name="databaseName">Имя базы данных</param>
+        /// <param name="username">Имя пользователя</param>
+        /// <param name="password">Пароль</param>
+        /// <param name="sslMode">SSL</param>
         public MySqlSettings(string host, int port, string databaseName, string username, string password, string sslMode)
         {
             this.Host = host;

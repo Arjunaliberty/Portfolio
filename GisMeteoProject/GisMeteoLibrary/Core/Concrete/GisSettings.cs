@@ -8,6 +8,13 @@ namespace GisMeteoLibrary.Core.Concrete
     public class GisSettings : ISettings
     {
         private readonly string url;
+        public string Url
+        {
+            get
+            {
+                return this.url;
+            }
+        }
         public GisSettings(string baseUrl)
         {
             this.url = baseUrl;      
@@ -15,14 +22,6 @@ namespace GisMeteoLibrary.Core.Concrete
         public GisSettings(string baseUrl, string parmUrl )
         {
             this.url = baseUrl + parmUrl;            
-        }
-
-        public string Url
-        {
-            get
-            {
-                return this.url;
-            }
         }
     }
 }
