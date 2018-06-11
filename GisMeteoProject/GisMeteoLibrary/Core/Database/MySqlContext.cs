@@ -382,6 +382,10 @@ namespace GisMeteoLibrary.Core.Database
                             connection.Close();
                         }
                     }
+                    else
+                    {
+                        throw new Exception("Отсутсвует таблица для вставки");
+                    }
 
                     break;
                 case SelectTable.Weathers:
@@ -499,22 +503,196 @@ namespace GisMeteoLibrary.Core.Database
                             connection.Close();
                         }
                     }
+                    else
+                    {
+                        throw new Exception("Отсутсвует таблица для вставки");
+                    }
 
                     break;
                 default:
                     break;
             }
         }
-
+        /// <summary>
+        /// Обновление данных в БД
+        /// </summary>
+        /// <param name="param">Параметр типа MySqlDatabase</param>
+        /// <param name="selectTable">Таблица для обновления</param>
         public void Update(MySqlDatabase param, SelectTable selectTable)
         {
             switch (selectTable)
             {
                 case SelectTable.Informations:
+                    if(param.Informations != null && param.Informations.Id > 0)
+                    {
+                        string sqlUpdate = "UPDATE info i SET i.City=@city, i.Link=@link WHERE Id=@id";
+                        MySqlTransaction transaction = null;
+
+                        try
+                        {
+                            if (connection.State == ConnectionState.Closed)
+                            {
+                                connection.Open();
+                            }
+
+                            transaction = connection.BeginTransaction();
+
+                            MySqlCommand command = new MySqlCommand(sqlUpdate, connection, transaction);
+
+                            MySqlParameter parameterId = new MySqlParameter("@id", MySqlDbType.String);
+                            parameterId.Value = param.Informations.Id;
+                            command.Parameters.Add(parameterId);
+
+                            MySqlParameter parameterCity = new MySqlParameter("@city", MySqlDbType.String);
+                            parameterCity.Value = param.Informations.City;
+                            command.Parameters.Add(parameterCity);
+
+                            MySqlParameter parameterLink = new MySqlParameter("@link", MySqlDbType.String);
+                            parameterLink.Value = param.Informations.Link;
+                            command.Parameters.Add(parameterLink);
+
+                            command.ExecuteNonQuery();
+                            transaction.Commit();
+                        }
+                        catch (Exception)
+                        {
+                            transaction.Rollback();
+                            throw new Exception("Ошибка при обновлении данных в БД");
+                        }
+                        finally
+                        {
+                            connection.Close();
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Отсутсвует таблица для вставки или неверный идентификатор");
+                    }
                     break;
                 case SelectTable.Weathers:
+                    if (param.Weathers != null && param.Weathers.Id > 0)
+                    {
+                        string sqlUpdate = "UPDATE weather w SET w.Condition=@condition, w.Date=@date, w.TempMin=@tempMin, w.TempMax=@tempMax, w.Precipitation=@precipitation WHERE Id=@id";
+                        MySqlTransaction transaction = null;
+
+                        try
+                        {
+                            if (connection.State == ConnectionState.Closed)
+                            {
+                                connection.Open();
+                            }
+
+                            transaction = connection.BeginTransaction();
+
+                            MySqlCommand command = new MySqlCommand(sqlUpdate, connection, transaction);
+
+                            MySqlParameter parameterId = new MySqlParameter("@id", MySqlDbType.String);
+                            parameterId.Value = param.Weathers.Id;
+                            command.Parameters.Add(parameterId);
+
+                            MySqlParameter parameterCondition = new MySqlParameter("@condition", MySqlDbType.String);
+                            parameterCondition.Value = param.Weathers.WeatherCondition;
+                            command.Parameters.Add(parameterCondition);
+
+                            MySqlParameter parameterDate = new MySqlParameter("@date", MySqlDbType.String);
+                            parameterDate.Value = param.Weathers.Date;
+                            command.Parameters.Add(parameterDate);
+
+                            MySqlParameter parameterTempMin = new MySqlParameter("@tempMin", MySqlDbType.String);
+                            parameterTempMin.Value = param.Weathers.TemperatureMin;
+                            command.Parameters.Add(parameterTempMin);
+
+                            MySqlParameter parameterTempMax = new MySqlParameter("@tempMax", MySqlDbType.String);
+                            parameterTempMax.Value = param.Weathers.TemperatureMax;
+                            command.Parameters.Add(parameterTempMax);
+
+                            MySqlParameter parameterPrecipitation = new MySqlParameter("@precipitation", MySqlDbType.String);
+                            parameterPrecipitation.Value = param.Weathers.Precipitation;
+                            command.Parameters.Add(parameterPrecipitation);
+
+                            command.ExecuteNonQuery();
+                            transaction.Commit();
+                        }
+                        catch (Exception)
+                        {
+                            transaction.Rollback();
+                            throw new Exception("Ошибка при обновлении данных в БД");
+                        }
+                        finally
+                        {
+                            connection.Close();
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Отсутсвует таблица для вставки или неверный идентификатор");
+                    }
                     break;
                 case SelectTable.All:
+                    if ((param.Informations != null && param.Informations.Id > 0) && (param.Weathers != null && param.Weathers.Id > 0))
+                    {
+                        string sqlUpdateFirst = "UPDATE info i SET i.City = @city, i.Link = @link WHERE Id = @id";
+                        string sqlUpdateSecond = "UPDATE weather w SET w.Condition=@condition, w.Date=@date, w.TempMin=@tempMin, w.TempMax=@tempMax, w.Precipitation=@precipitation WHERE w.Info_Id=@info_Id";
+                        MySqlTransaction transaction = null;
+
+                        try
+                        {
+                            if (connection.State == ConnectionState.Closed)
+                            {
+                                connection.Open();
+                            }
+
+                            transaction = connection.BeginTransaction();
+
+                            MySqlCommand commandFirst = new MySqlCommand(sqlUpdateFirst, connection, transaction);
+                            MySqlParameter parameterId = new MySqlParameter("@id", MySqlDbType.String);
+                            parameterId.Value = param.Informations.Id;
+                            commandFirst.Parameters.Add(parameterId);
+                            MySqlParameter parameterCity = new MySqlParameter("@city", MySqlDbType.String);
+                            parameterCity.Value = param.Informations.City;
+                            commandFirst.Parameters.Add(parameterCity);
+                            MySqlParameter parameterLink = new MySqlParameter("@link", MySqlDbType.String);
+                            parameterLink.Value = param.Informations.Link;
+                            commandFirst.Parameters.Add(parameterLink);
+                            commandFirst.ExecuteNonQuery();
+
+                            MySqlCommand commandSecond = new MySqlCommand(sqlUpdateSecond, connection, transaction);
+                            MySqlParameter parameterCondition = new MySqlParameter("@condition", MySqlDbType.String);
+                            parameterCondition.Value = param.Weathers.WeatherCondition;
+                            commandSecond.Parameters.Add(parameterCondition);
+                            MySqlParameter parameterDate = new MySqlParameter("@date", MySqlDbType.String);
+                            parameterDate.Value = param.Weathers.Date;
+                            commandSecond.Parameters.Add(parameterDate);
+                            MySqlParameter parameterTempMin = new MySqlParameter("@tempMin", MySqlDbType.String);
+                            parameterTempMin.Value = param.Weathers.TemperatureMin;
+                            commandSecond.Parameters.Add(parameterTempMin);
+                            MySqlParameter parameterTempMax = new MySqlParameter("@tempMax", MySqlDbType.String);
+                            parameterTempMax.Value = param.Weathers.TemperatureMax;
+                            commandSecond.Parameters.Add(parameterTempMax);
+                            MySqlParameter parameterPrecipitation = new MySqlParameter("@precipitation", MySqlDbType.String);
+                            parameterPrecipitation.Value = param.Weathers.Precipitation;
+                            commandSecond.Parameters.Add(parameterPrecipitation);
+                            MySqlParameter parameterInfo_Id = new MySqlParameter("@info_Id", MySqlDbType.String);
+                            parameterInfo_Id.Value = param.Informations.Id;
+                            commandSecond.Parameters.Add(parameterInfo_Id);
+                            
+                            commandSecond.ExecuteNonQuery();
+                            transaction.Commit();
+                        }
+                        catch (Exception)
+                        {
+                            transaction.Rollback();
+                            throw new Exception("Ошибка при обновлении данных в БД");
+                        }
+                        finally
+                        {
+                            connection.Close();
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Отсутсвует таблица для вставки или неверный идентификатор");
+                    }
                     break;
                 default:
                     break;
@@ -565,3 +743,4 @@ namespace GisMeteoLibrary.Core.Database
         }
     }
 }
+                                                                                                       

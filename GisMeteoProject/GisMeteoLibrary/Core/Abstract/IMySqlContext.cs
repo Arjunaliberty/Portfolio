@@ -1,12 +1,12 @@
 ﻿using GisMeteoLibrary.Core.Database;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GisMeteoLibrary.Core.Abstract
 {
+    /// <summary>
+    /// Интерфейс описывабщий контест БД
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public interface IMySqlContext<T>
     {
         T GetItem(int id, SelectTable selectTable);

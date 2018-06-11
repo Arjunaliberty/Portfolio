@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
 using System.Threading;
 using GisMeteoLibrary.Core;
-using GisMeteoLibrary.Core.Concrete;
-using GisMeteoLibrary.Models;
 
 namespace GisMeteoApp
 {
@@ -22,7 +17,7 @@ namespace GisMeteoApp
         private static void Callback(Object obj)
         {
             Console.Clear();
-            ConnectServis connect = new ConnectServis();
+            RunServis connect = new RunServis();
             connect.Run();
         }
     }

@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GisMeteoLibrary.Models
-{
+﻿namespace GisMeteoLibrary.Models
+{   /// <summary>
+    /// Строка БД из таблицы weather
+    /// </summary>
     public class Weather
     {
         public int Id { get; set; }

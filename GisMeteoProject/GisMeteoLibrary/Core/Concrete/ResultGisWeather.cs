@@ -1,14 +1,13 @@
 ﻿using GisMeteoLibrary.Core.Abstract;
 using GisMeteoLibrary.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace GisMeteoLibrary.Core.Concrete
 {
+    /// <summary>
+    /// Класс реализующий интерфейс IResult для получения данных конкретного города
+    /// </summary>
     public class ResultGisWeather : IResult<Weather>
     {
         public ResultGisWeather() {
