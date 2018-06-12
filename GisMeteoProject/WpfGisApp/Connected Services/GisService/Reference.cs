@@ -15,11 +15,17 @@ namespace WpfGisApp.GisService {
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="GisService.IGisService")]
     public interface IGisService {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGisService/DoWork", ReplyAction="http://tempuri.org/IGisService/DoWorkResponse")]
-        void DoWork();
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGisService/GetAllCity", ReplyAction="http://tempuri.org/IGisService/GetAllCityResponse")]
+        string GetAllCity();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGisService/DoWork", ReplyAction="http://tempuri.org/IGisService/DoWorkResponse")]
-        System.Threading.Tasks.Task DoWorkAsync();
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGisService/GetAllCity", ReplyAction="http://tempuri.org/IGisService/GetAllCityResponse")]
+        System.Threading.Tasks.Task<string> GetAllCityAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGisService/GetWeatherCity", ReplyAction="http://tempuri.org/IGisService/GetWeatherCityResponse")]
+        string GetWeatherCity(int id);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IGisService/GetWeatherCity", ReplyAction="http://tempuri.org/IGisService/GetWeatherCityResponse")]
+        System.Threading.Tasks.Task<string> GetWeatherCityAsync(int id);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -49,12 +55,20 @@ namespace WpfGisApp.GisService {
                 base(binding, remoteAddress) {
         }
         
-        public void DoWork() {
-            base.Channel.DoWork();
+        public string GetAllCity() {
+            return base.Channel.GetAllCity();
         }
         
-        public System.Threading.Tasks.Task DoWorkAsync() {
-            return base.Channel.DoWorkAsync();
+        public System.Threading.Tasks.Task<string> GetAllCityAsync() {
+            return base.Channel.GetAllCityAsync();
+        }
+        
+        public string GetWeatherCity(int id) {
+            return base.Channel.GetWeatherCity(id);
+        }
+        
+        public System.Threading.Tasks.Task<string> GetWeatherCityAsync(int id) {
+            return base.Channel.GetWeatherCityAsync(id);
         }
     }
 }

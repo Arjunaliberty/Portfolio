@@ -3,24 +3,44 @@
   <wsdl:types>
     <xsd:schema targetNamespace="http://tempuri.org/Imports">
       <xsd:import schemaLocation="http://localhost:19324/GisService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://localhost:19324/GisService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
     </xsd:schema>
   </wsdl:types>
-  <wsdl:message name="IGisService_DoWork_InputMessage">
-    <wsdl:part name="parameters" element="tns:DoWork" />
+  <wsdl:message name="IGisService_GetAllCity_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllCity" />
   </wsdl:message>
-  <wsdl:message name="IGisService_DoWork_OutputMessage">
-    <wsdl:part name="parameters" element="tns:DoWorkResponse" />
+  <wsdl:message name="IGisService_GetAllCity_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllCityResponse" />
+  </wsdl:message>
+  <wsdl:message name="IGisService_GetWeatherCity_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetWeatherCity" />
+  </wsdl:message>
+  <wsdl:message name="IGisService_GetWeatherCity_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetWeatherCityResponse" />
   </wsdl:message>
   <wsdl:portType name="IGisService">
-    <wsdl:operation name="DoWork">
-      <wsdl:input wsaw:Action="http://tempuri.org/IGisService/DoWork" message="tns:IGisService_DoWork_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IGisService/DoWorkResponse" message="tns:IGisService_DoWork_OutputMessage" />
+    <wsdl:operation name="GetAllCity">
+      <wsdl:input wsaw:Action="http://tempuri.org/IGisService/GetAllCity" message="tns:IGisService_GetAllCity_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IGisService/GetAllCityResponse" message="tns:IGisService_GetAllCity_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetWeatherCity">
+      <wsdl:input wsaw:Action="http://tempuri.org/IGisService/GetWeatherCity" message="tns:IGisService_GetWeatherCity_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IGisService/GetWeatherCityResponse" message="tns:IGisService_GetWeatherCity_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IGisService" type="tns:IGisService">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
-    <wsdl:operation name="DoWork">
-      <soap:operation soapAction="http://tempuri.org/IGisService/DoWork" style="document" />
+    <wsdl:operation name="GetAllCity">
+      <soap:operation soapAction="http://tempuri.org/IGisService/GetAllCity" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWeatherCity">
+      <soap:operation soapAction="http://tempuri.org/IGisService/GetWeatherCity" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

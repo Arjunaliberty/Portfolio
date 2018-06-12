@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfGisApp"
         mc:Ignorable="d"
-        Title="GisClient" Height="450" Width="800">
-    <Grid Margin="0,0,2,0">
+        Title="GisClient" Height="307" Width="800">
+    <Grid Margin="0,0,2,2">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
@@ -14,15 +14,24 @@
             <ColumnDefinition Width="32*" />
             <ColumnDefinition Width="47*" />
         </Grid.ColumnDefinitions>
-        <Label Grid.Row="0" Grid.Column="0" Name="CityChoose" Content="Выберите город: " VerticalAlignment="Top" Height="28" FontFamily="Times New Roman" FontSize="14" FontWeight="Bold" Margin="10,8,146,0"/>
-        <ComboBox Grid.Row="0" Grid.Column="0" Name="DropList" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,39,0,0" Width="184" Height="28" FontFamily="Times New Roman" FontSize="14"/>
-        <Button Grid.Row="0" Grid.Column="0" Name="Send" Content="Загрузить" Click="Button_Click" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="216,40,0,0" Width="83" Height="28" FontFamily="Times New Roman" FontSize="14" Background="#FFACF596"/>
-        <Label Grid.Row="0" Grid.Column="1" Name="Info"  Content="Погода на зватра :" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="19,18,0,0" FontFamily="Times New Roman" FontSize="14"/>
-        <Label Grid.Row="0" Grid.Column="1" Name="Data"  Content="Погода на зватра :" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="164,18,0,0"/>
-        <Label Grid.Row="0" Grid.Column="1" Name="City" Content="Город: " VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,58,0,-8" Height="26" Width="49" FontFamily="Times New Roman" FontSize="14"/>
-        <Label Grid.Row="0" Grid.Column="1" Name="Condition"  Content="Погодные условия" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,108,0,-57" FontFamily="Times New Roman" FontSize="14"/>
-        <Label Grid.Row="0" Grid.Column="1" Name="TempMin"  Content="Минимальная температура" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,154,0,-101" FontSize="14" FontFamily="Times New Roman"/>
-        <Label Grid.Row="0" Grid.Column="1" Name="TempMax"  Content="Максимальная температура" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,198,0,-144" FontFamily="Times New Roman" FontSize="14"/>
-        <Label Grid.Row="0" Grid.Column="1" Name="Perc"  Content="Осадки" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,242,0,-187" FontFamily="Times New Roman" FontSize="14"/>
+        <Label Grid.Row="0" Grid.Column="0" Name="CityChoose" Content="Выберите город: " VerticalAlignment="Top" Height="28" FontFamily="Verdana" FontWeight="Bold" Margin="10,8,146,0" FontSize="14"/>
+        <ComboBox Grid.Row="0" Grid.Column="0" Name="DropList" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,36,0,0" Width="184" Height="28" FontFamily="Verdana"/>
+        <Button Grid.Row="0" Grid.Column="0" Name="Send" Content="Загрузить" Click="Button_Click" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="216,36,0,0" Width="83" Height="28" FontFamily="Times New Roman" FontSize="14" Background="#FFACF596"/>
+        <Label Grid.Row="0" Grid.Column="0" Name="State" Content="Состояние соединения:" VerticalAlignment="Top" Height="28" FontFamily="Verdana" FontSize="14" FontWeight="Bold" Margin="10,85,105,-19"/>
+        <TextBox Grid.Row="0" Grid.Column="0" Name="StateInfo" HorizontalAlignment="Left" Height="120" Margin="10,120,0,-134" TextWrapping="Wrap" VerticalAlignment="Top" Width="289" BorderBrush="{x:Null}" SelectionBrush="{x:Null}" BorderThickness="0" Foreground="Black" FontFamily="Verdana"/>
+
+        <Label Grid.Row="0" Grid.Column="1" Name="Info"  Content="Погода на зватра:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="19,18,0,0" FontFamily="Verdana" FontWeight="Bold"/>
+        <Label Grid.Row="0" Grid.Column="1" Name="DataInfo" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="162,20,0,0" Width="287" FontFamily="Verdana"/>
+        <Label Grid.Row="0" Grid.Column="1" Name="City" Content="Город: " VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,50,0,0" Height="26" Width="63" FontFamily="Verdana" RenderTransformOrigin="0.531,-0.308" FontWeight="Bold"/>
+        <Label Grid.Row="0" Grid.Column="1" Name="CityInfo" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="88,51,0,0" Height="26" Width="361" FontFamily="Verdana"/>
+        <Label Grid.Row="0" Grid.Column="1" Name="Condition"  Content="Погодные условия:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,82,0,-12" FontFamily="Verdana" FontWeight="Bold" Width="143"/>
+        <Label Grid.Row="0" Grid.Column="1" Name="ConditionInfo" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="168,81,0,-9" FontFamily="Verdana" Width="281"/>
+        <Label Grid.Row="0" Grid.Column="1" Name="TempMin"  Content="Минимальная температура:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,116,0,-40" FontFamily="Verdana" FontWeight="Bold"/>
+        <Label Grid.Row="0" Grid.Column="1" Name="TempMinInfo" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="241,115,0,-41" FontFamily="Verdana" Width="208"/>
+        <Label Grid.Row="0" Grid.Column="1" Name="TempMax"  Content="Максимальная температура:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,146,0,-70" FontFamily="Verdana" FontWeight="Bold"/>
+        <Label Grid.Row="0" Grid.Column="1" Name="TempMaxInfo" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="241,146,0,-68" FontFamily="Verdana" Width="208"/>
+        <Label Grid.Row="0" Grid.Column="1" Name="Precipitation" Content="Осадки:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,176,0,-98" FontFamily="Verdana" FontWeight="Bold"/>
+        <Label Grid.Row="0" Grid.Column="1" Name="PrecipitationInfo"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="90,175,0,-95" FontFamily="Verdana" Width="359"/>
+
     </Grid>
 </Window>
